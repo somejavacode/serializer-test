@@ -10,5 +10,24 @@
     
     <artifactId>serializer-test-common</artifactId>
     <version>1.0-SNAPSHOT</version>
-    
+
+    <!-- this is the "not elegant (tm)" way to export test code for other modules (what a bizarre desire?)
+        in these modules add dependency with type = test-jar (and scope = test) -->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
