@@ -9,8 +9,8 @@ public interface SerializeService { // SerializeService<T> how to? not at runtim
 
     void serialize(Object obj, OutputStream os) throws Exception;
 
-    Object deserialize(byte[] bytes) throws Exception;
+    Object deserialize(byte[] bytes, Class type) throws Exception;
 
-    Object deserialize(InputStream is) throws Exception;
+    Object deserialize(InputStream is, Class type) throws Exception;
 
 }

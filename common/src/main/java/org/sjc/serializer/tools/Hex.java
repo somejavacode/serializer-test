@@ -42,6 +42,9 @@ public class Hex {
      * @return the String representation
      */
     public static String toString(byte[] ba) {
+        if (ba == null) {
+            return "nullArray";
+        }
         return toString(ba, 0, ba.length);
     }
 

@@ -10,14 +10,22 @@ public class DataObject {
         T1,
         T2,
         T3,
-        T4
+        T4;
+
+        public static Type byOrdinal(int ordinal) {
+            for (Type t : values()) {
+                if (t.ordinal() == ordinal) {
+                    return t;
+                }
+            }
+            throw new RuntimeException("unknown ordinal: " + ordinal);
+        }
     }
 
     private Type type;
-
     private long longValue;
     private String stringValue;
-    private byte[] bytesArray;
+    private byte[] byteArray;
 
     public long getLongValue() {
         return longValue;
@@ -35,12 +43,12 @@ public class DataObject {
         this.stringValue = stringValue;
     }
 
-    public byte[] getBytesArray() {
-        return bytesArray;
+    public byte[] getByteArray() {
+        return byteArray;
     }
 
-    public void setBytesArray(byte[] bytesArray) {
-        this.bytesArray = bytesArray;
+    public void setByteArray(byte[] byteArray) {
+        this.byteArray = byteArray;
     }
 
     public Type getType() {
@@ -51,7 +59,7 @@ public class DataObject {
         this.type = type;
     }
 
-    // intellij generated methods below
+    // intellij generated methods below, patched Hex.toString()
 
     @Override
     public boolean equals(Object o) {
@@ -73,7 +81,7 @@ public class DataObject {
         if (stringValue != null ? !stringValue.equals(that.stringValue) : that.stringValue != null) {
             return false;
         }
-        return Arrays.equals(bytesArray, that.bytesArray);
+        return Arrays.equals(byteArray, that.byteArray);
 
     }
 
@@ -82,7 +90,7 @@ public class DataObject {
         int result = type != null ? type.hashCode() : 0;
         result = 31 * result + (int) (longValue ^ (longValue >>> 32));
         result = 31 * result + (stringValue != null ? stringValue.hashCode() : 0);
-        result = 31 * result + Arrays.hashCode(bytesArray);
+        result = 31 * result + Arrays.hashCode(byteArray);
         return result;
     }
 
@@ -92,7 +100,7 @@ public class DataObject {
                 "type=" + type +
                 ", longValue=" + longValue +
                 ", stringValue='" + stringValue + '\'' +
-                ", bytesArray=" + Hex.toString(bytesArray) +
+                ", byteArray=" + Hex.toString(byteArray) +
                 '}';
     }
 }
