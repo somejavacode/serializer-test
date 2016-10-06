@@ -11,27 +11,34 @@
     <artifactId>serializer-test-protostuff</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <!-- https://github.com/protostuff/protostuff -->
+    <!-- http://www.protostuff.io/
+         https://github.com/protostuff/protostuff -->
 
     <properties>
         <protostuff.version>1.5.0</protostuff.version>
     </properties>
 
     <dependencies>
+        <!-- When you generate schemas for your classes -->
         <dependency>
-
-            <!-- When you generate schemas for your classes -->
             <groupId>io.protostuff</groupId>
             <artifactId>protostuff-core</artifactId>
             <version>${protostuff.version}</version>
         </dependency>
-        <dependency>
-            <!-- Runtime schemas -->
-            <groupId>io.protostuff</groupId>
-            <artifactId>protostuff-runtime</artifactId>
-            <version>${protostuff.version}</version>
-        </dependency>
+        <!-- Runtime schemas -->
+        <!--<dependency>-->
+            <!--<groupId>io.protostuff</groupId>-->
+            <!--<artifactId>protostuff-runtime</artifactId>-->
+            <!--<version>${protostuff.version}</version>-->
+        <!--</dependency>-->
 
+        <dependency>
+            <groupId>somejavacode</groupId>
+            <artifactId>serializer-test-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>somejavacode</groupId>
             <artifactId>serializer-test-common</artifactId>
