@@ -12,7 +12,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class ProtostuffProtobufSerializer implements SerializeService {
+public class ProtostuffRawProtobufSerializer implements SerializeService {
     @Override
     public byte[] serialize(Object obj) throws Exception {
         ByteArrayOutputStream out = new ByteArrayOutputStream();

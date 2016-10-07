@@ -26,11 +26,11 @@
             <version>${protostuff.version}</version>
         </dependency>
         <!-- Runtime schemas -->
-        <!--<dependency>-->
-            <!--<groupId>io.protostuff</groupId>-->
-            <!--<artifactId>protostuff-runtime</artifactId>-->
-            <!--<version>${protostuff.version}</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>io.protostuff</groupId>
+            <artifactId>protostuff-runtime</artifactId>
+            <version>${protostuff.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>somejavacode</groupId>
