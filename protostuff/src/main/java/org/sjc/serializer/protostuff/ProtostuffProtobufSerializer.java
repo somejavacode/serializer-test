@@ -3,6 +3,7 @@ package org.sjc.serializer.protostuff;
 import io.protostuff.CodedInput;
 import io.protostuff.LinkedBuffer;
 import io.protostuff.ProtobufOutput;
+import io.protostuff.WireFormat;
 import org.sjc.serializer.api.SerializeService;
 import org.sjc.serializer.dto.DataObject;
 
@@ -29,10 +30,10 @@ public class ProtostuffProtobufSerializer implements SerializeService {
         ProtobufOutput output = new ProtobufOutput(lb);
 
         if (obj instanceof DataObject) {
+            // hardcoded according to ProtobufConstants.PROTO_DATA_OBJECT
             DataObject data = (DataObject) obj;
             if (data.getType() != null) {
-                // manual field numbering here...
-                output.writeUInt32(1, data.getType().ordinal(), false);
+                output.writeUInt32(1, data.getType().getId(), false);
             }
             output.writeSInt64(2, data.getLongValue(), false);
             if (data.getStringValue() != null) {
@@ -58,16 +59,20 @@ public class ProtostuffProtobufSerializer implements SerializeService {
     @Override
     public Object deserialize(InputStream is, Class type) throws Exception {
 
-        CodedInput input = CodedInput.newInstance(is); // why is there no ProtobufInput?
+        // CodedInput is "implicit" protocol buffer specific.
+        // why is there no ProtobufInput (as ProtobufOutput exists)?
+        // other "Inputs" look very similar (i.e. have cut and waste code): ByteArrayInput, ByteBufferInput
+        CodedInput input = new CodedInput(is, false);
         if (type == DataObject.class) {
+            // hardcoded according to ProtobufConstants.PROTO_DATA_OBJECT
             DataObject ret = new DataObject();
             while (!input.isAtEnd()) {
-                int i = input.readTag();
-                int fieldId = i >>> 3;
-//                int fieldType = i & 7;
-                switch (fieldId) {
+                int tag = input.readTag();
+//                int fieldType = WireFormat.getTagWireType(tag);
+                int fieldNr = WireFormat.getTagFieldNumber(tag);
+                switch (fieldNr) {
                     case 1:
-                        ret.setType(DataObject.Type.byOrdinal(input.readInt32()));
+                        ret.setType(DataObject.Type.getById(input.readInt32()));
                         break;
                     case 2:
                         ret.setLongValue(input.readSInt64());
@@ -79,7 +84,7 @@ public class ProtostuffProtobufSerializer implements SerializeService {
                         ret.setByteArray(input.readByteArray());
                         break;
                     default:
-                        throw new RuntimeException("unsupported field nr: " + i);
+                        throw new RuntimeException("unsupported field nr: " + fieldNr + " tag: " + tag);
                 }
             }
             return ret;

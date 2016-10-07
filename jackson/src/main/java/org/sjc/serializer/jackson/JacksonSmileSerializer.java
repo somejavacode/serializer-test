@@ -33,7 +33,7 @@ public class JacksonSmileSerializer implements SerializeService {
                 gen.writeNull();
             }
             else {
-                gen.writeNumber(data.getType().ordinal()); // hmm. improve with explicit number
+                gen.writeNumber(data.getType().getId());
             }
             gen.writeNumber(data.getLongValue());
             if (data.getStringValue() == null) {
@@ -68,7 +68,7 @@ public class JacksonSmileSerializer implements SerializeService {
         if (type == DataObject.class) {
             DataObject ret = new DataObject();
             if (!parser.nextToken().equals(JsonToken.VALUE_NULL)) {
-                ret.setType(DataObject.Type.byOrdinal(parser.getIntValue()));
+                ret.setType(DataObject.Type.getById(parser.getIntValue()));
             }
             // could validate type "a little bit" (e.g. "numeric")
             parser.nextToken();

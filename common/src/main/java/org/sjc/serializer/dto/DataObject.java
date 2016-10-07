@@ -7,18 +7,28 @@ import java.util.Arrays;
 public class DataObject {
 
     public enum Type {
-        T1,
-        T2,
-        T3,
-        T4;
+        T1(0),
+        T2(1),
+        T3(2),
+        T4(3);
 
-        public static Type byOrdinal(int ordinal) {
+        private int id;
+
+        public int getId() {
+            return id;
+        }
+
+        Type(int id) {
+            this.id = id;
+        }
+
+        public static Type getById(int id) {
             for (Type t : values()) {
-                if (t.ordinal() == ordinal) {
+                if (t.getId() == id) {
                     return t;
                 }
             }
-            throw new RuntimeException("unknown ordinal: " + ordinal);
+            throw new RuntimeException("unknown id: " + id);
         }
     }
 
