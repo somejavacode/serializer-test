@@ -7,8 +7,8 @@ import com.fasterxml.jackson.dataformat.protobuf.schema.ProtobufSchema;
 import com.fasterxml.jackson.dataformat.protobuf.schema.ProtobufSchemaLoader;
 import org.sjc.serializer.api.SerializeService;
 import org.sjc.serializer.dto.DataObject;
-import org.sjc.serializer.dto.ProtobufConstants;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -22,13 +22,26 @@ public class JacksonProtobufSerializer implements SerializeService {
         try {
             // automatically, generates proto file, but has one "error": "repeated bytes byteArray = 4;"
             // schemaDataObject = mapper.generateSchemaFor(DataObject.class);
-
-            // load schema from String...
-            schemaDataObject = ProtobufSchemaLoader.std.parse(ProtobufConstants.PROTO_DATA_OBJECT);
+            schemaDataObject = loadSchema(DataObject.class);
         }
         catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private ProtobufSchema loadSchema(Class clazz) throws Exception {
+        // load schema from File...
+        String path = "/proto/" + clazz.getSimpleName() + ".proto";
+        InputStream is = this.getClass().getResourceAsStream(path);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        byte[] buffer = new byte[256];
+        int bytes = 0;
+        while ((bytes = is.read(buffer)) != -1) {
+            baos.write(buffer, 0, bytes);
+        }
+        byte[] fileData = baos.toByteArray();
+        String schemaString = new String(fileData, "utf-8");
+        return ProtobufSchemaLoader.std.parse(schemaString);
     }
 
     @Override

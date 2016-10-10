@@ -20,6 +20,11 @@ public abstract class AbstractSerializeTest {
     protected abstract SerializeService getSerializer();
     protected abstract String getInfo();
 
+    /** override for slower serializers */
+    protected int getRepeats() {
+        return 50000;
+    }
+
     @Test
     public void simpleObjectTest() throws Exception {
         DataObject object = new DataObject();
@@ -70,7 +75,12 @@ public abstract class AbstractSerializeTest {
         object.setStringValue("Lorem ipsum dolor sit amet, consectetur adipiscing elit");
         object.setLongValue(0x992233445511L);
 
-        int repeat = 50000;
+
+        int repeat = getRepeats();
+        // warm up
+        for (int i = 0; i < repeat; i++) {
+            testSerializeDeserialize(object, false);
+        }
         long start = System.nanoTime();
         for (int i = 0; i < repeat; i++) {
             testSerializeDeserialize(object, false);
