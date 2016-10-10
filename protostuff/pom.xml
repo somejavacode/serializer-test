@@ -15,7 +15,7 @@
          https://github.com/protostuff/protostuff -->
 
     <properties>
-        <protostuff.version>1.5.0</protostuff.version>
+        <protostuff.version>1.5.1</protostuff.version>
     </properties>
 
     <dependencies>
