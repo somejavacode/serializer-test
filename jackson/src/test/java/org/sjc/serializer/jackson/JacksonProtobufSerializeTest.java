@@ -15,7 +15,4 @@ public class JacksonProtobufSerializeTest extends AbstractSerializeTest {
         return "Jackson-Protobuf";
     }
 
-    protected int getRepeats() {
-        return 5000;
-    }
 }
