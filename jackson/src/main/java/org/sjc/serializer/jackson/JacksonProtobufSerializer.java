@@ -6,38 +6,49 @@ import com.fasterxml.jackson.dataformat.protobuf.ProtobufMapper;
 import com.fasterxml.jackson.dataformat.protobuf.schema.ProtobufSchema;
 import com.fasterxml.jackson.dataformat.protobuf.schema.ProtobufSchemaLoader;
 import org.sjc.serializer.api.SerializeService;
+import org.sjc.serializer.dto.DataList;
 import org.sjc.serializer.dto.DataObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
 
 public class JacksonProtobufSerializer implements SerializeService {
 
     private ProtobufMapper mapper;
-    private ProtobufSchema schemaDataObject;
+    private HashMap<Class, ProtobufSchema> schemaMap;
 
     public JacksonProtobufSerializer() {
+        schemaMap = new HashMap<Class, ProtobufSchema>();
         mapper = new ProtobufMapper();
+
+        // need one schema per root level message
         try {
-            // automatically, generates proto file, but has one "error": "repeated bytes byteArray = 4;"
-            // schemaDataObject = mapper.generateSchemaFor(DataObject.class);
-            schemaDataObject = loadSchema(DataObject.class);
+            schemaMap.put(DataObject.class,
+                    loadSchema(new Class[] { DataObject.class }));
+
+            // need to merge two schemas
+            schemaMap.put(DataList.class,
+                    // sequence is important!
+                    loadSchema(new Class[] { DataList.class, DataObject.class }));
         }
         catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    private ProtobufSchema loadSchema(Class clazz) throws Exception {
-        // load schema from File...
-        String path = "/proto/" + clazz.getSimpleName() + ".proto";
-        InputStream is = this.getClass().getResourceAsStream(path);
+    private ProtobufSchema loadSchema(Class[] classes) throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        byte[] buffer = new byte[256];
-        int bytes = 0;
-        while ((bytes = is.read(buffer)) != -1) {
-            baos.write(buffer, 0, bytes);
+        // merge schema from all Files.
+        for (Class clazz: classes) {
+            String path = "/proto/" + clazz.getSimpleName() + ".proto";
+            InputStream is = this.getClass().getResourceAsStream(path);
+            byte[] buffer = new byte[256];
+            int bytes = 0;
+            while ((bytes = is.read(buffer)) != -1) {
+                baos.write(buffer, 0, bytes);
+            }
         }
         byte[] fileData = baos.toByteArray();
         String schemaString = new String(fileData, "utf-8");
@@ -46,14 +57,13 @@ public class JacksonProtobufSerializer implements SerializeService {
 
     @Override
     public byte[] serialize(Object obj) throws Exception {
-        if (obj instanceof DataObject) {
-            // todo: thread safe?
-            ObjectWriter writer = mapper.writer(schemaDataObject);
-            return writer.writeValueAsBytes(obj);
-        }
-        else {
+        ProtobufSchema schema = schemaMap.get(obj.getClass());
+        if (schema == null) {
             throw new RuntimeException("not implemented class: " + obj.getClass());
         }
+        // todo: thread safe?
+        ObjectWriter writer = mapper.writer(schema);
+        return writer.writeValueAsBytes(obj);
     }
 
     @Override
@@ -63,14 +73,14 @@ public class JacksonProtobufSerializer implements SerializeService {
 
     @Override
     public Object deserialize(byte[] bytes, Class type) throws Exception {
-        if (type == DataObject.class) {
-            // todo: thread safe?
-            ObjectReader r =  mapper.readerFor(DataObject.class).with(schemaDataObject);
-            return r.readValue(bytes);
-        }
-        else {
+        ProtobufSchema schema = schemaMap.get(type);
+        if (schema == null) {
             throw new RuntimeException("not implemented class: " + type);
+
         }
+        // todo: thread safe?
+        ObjectReader r = mapper.readerFor(type).with(schema);
+        return r.readValue(bytes);
     }
 
     @Override

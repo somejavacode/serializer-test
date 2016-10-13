@@ -1,0 +1,3 @@
+message DataList {
+    repeated DataObject objects = 1;
+}
