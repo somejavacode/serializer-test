@@ -1,0 +1,7 @@
+import "DataObject.proto";
+
+package org.sjc.serializer.protoc;
+
+message DataList {
+    repeated DataObject objects = 1;
+}
