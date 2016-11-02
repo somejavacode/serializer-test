@@ -58,7 +58,7 @@ public class JacksonProtobufSerializeTest extends AbstractSerializeTest {
             LOG.info("serialized type: " + getInfo() + " input: " + object);
             LOG.info("got bytes with length=" + objBytes.length + " value=" + Hex.toString(objBytes));
         }
-        DataList object2 = (DataList) service.deserialize(objBytes, DataList.class);
+        DataList object2 = service.deserialize(objBytes, DataList.class);
         Assert.assertEquals(object, object2);
     }
 

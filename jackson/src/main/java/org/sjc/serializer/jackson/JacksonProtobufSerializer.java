@@ -11,7 +11,6 @@ import org.sjc.serializer.dto.DataObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.HashMap;
 
 public class JacksonProtobufSerializer implements SerializeService {
@@ -66,13 +65,9 @@ public class JacksonProtobufSerializer implements SerializeService {
         return writer.writeValueAsBytes(obj);
     }
 
-    @Override
-    public void serialize(Object obj, OutputStream os) throws Exception {
-        throw new RuntimeException("not supported");
-    }
 
     @Override
-    public Object deserialize(byte[] bytes, Class type) throws Exception {
+    public <T> T deserialize(byte[] bytes, Class<T> type) throws Exception {
         ProtobufSchema schema = schemaMap.get(type);
         if (schema == null) {
             throw new RuntimeException("not implemented class: " + type);
@@ -83,8 +78,4 @@ public class JacksonProtobufSerializer implements SerializeService {
         return r.readValue(bytes);
     }
 
-    @Override
-    public Object deserialize(InputStream is, Class type) throws Exception {
-        throw new RuntimeException("not supported");
-    }
 }

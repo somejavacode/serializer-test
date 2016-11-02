@@ -19,22 +19,13 @@ public class ProtobufSerializer implements SerializeService {
     }
 
     @Override
-    public void serialize(Object obj, OutputStream os) throws Exception {
-        throw new Exception("not supported");
-    }
-
-    @Override
-    public Object deserialize(byte[] bytes, Class type) throws Exception {
+    public <T> T deserialize(byte[] bytes, Class<T> type) throws Exception {
         if (type == DataObject.class) {
-            return DataObject.parseFrom(bytes);
+            return (T) DataObject.parseFrom(bytes);
         }
         else {
             throw new RuntimeException("not implemented class: " + type);
         }
     }
 
-    @Override
-    public Object deserialize(InputStream is, Class type) throws Exception {
-        throw new Exception("not supported");
-    }
 }

@@ -36,36 +36,6 @@ public abstract class AbstractSerializeTest {
         testSerializeDeserialize(service,  object, true);
     }
 
-    @Test
-    @Ignore("does not work with current API")
-    public void simpleStreamTest() throws Exception {
-        DataObject object1 = new DataObject();
-        object1.setByteArray(new byte[] {1, 2, 3, -1, 33});
-        object1.setType(DataObject.Type.T1);
-        object1.setStringValue("whatever 1234556 üöä");  // note: this is utf-8 source code
-        object1.setLongValue(0x112233445566L);
-
-        DataObject object2 = new DataObject();
-        object2.setByteArray(new byte[] {3, 2, 5, -1, 33});
-        object2.setType(DataObject.Type.T2);
-        object2.setStringValue("what else");
-        object2.setLongValue(0x122233445566L);
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        SerializeService service = getSerializer();
-        service.serialize(object1, baos);
-        service.serialize(object2, baos);
-        baos.flush();
-
-        ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
-
-        // Problem: first call "eats" all bytes (second call fails obviously)
-        // parser.releaseBuffered() would return already consumed stream but that is cumbersome and breaks API
-        DataObject object1d = (DataObject) service.deserialize(bais, DataObject.class);
-        Assert.assertEquals(object1, object1d);
-        DataObject object2d = (DataObject) service.deserialize(bais, DataObject.class);
-        Assert.assertEquals(object2, object2d);
-    }
 
     @Test
     public void speedTest() throws Exception {
@@ -115,7 +85,7 @@ public abstract class AbstractSerializeTest {
             LOG.info("serialized type: " + getInfo() + " input: " + object);
             LOG.info("got bytes with length=" + objBytes.length + " value=" + Hex.toString(objBytes));
         }
-        DataObject object2 = (DataObject) service.deserialize(objBytes, DataObject.class);
+        DataObject object2 = service.deserialize(objBytes, DataObject.class);
         Assert.assertEquals(object, object2);
     }
 

@@ -13,16 +13,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class ProtostuffRawProtobufSerializer implements SerializeService {
+
     @Override
     public byte[] serialize(Object obj) throws Exception {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        serialize(obj, out);
-        return out.toByteArray();
-    }
-
-    @Override
-    public void serialize(Object obj, OutputStream os) throws Exception {
-
         LinkedBuffer lb = LinkedBuffer.allocate(256);  // any rules for this magic number?
         // WriteSession session = new WriteSession(lb); where would this write?
         // WriteSession session = new WriteSession(lb, os);
@@ -42,27 +36,25 @@ public class ProtostuffRawProtobufSerializer implements SerializeService {
             if (data.getByteArray() != null) {
                 output.writeByteArray(4, data.getByteArray(), false);
             }
-            byte[] bytes = output.toByteArray();
-            os.write(bytes);
+            return output.toByteArray();
         }
         else {
             throw new RuntimeException("not implemented class: " + obj.getClass());
         }
     }
 
-    @Override
-    public Object deserialize(byte[] bytes, Class type) throws Exception {
-        ByteArrayInputStream in = new ByteArrayInputStream(bytes);
-        return deserialize(in, type);
+    public void serialize(Object obj, OutputStream os) throws Exception {
+
     }
 
     @Override
-    public Object deserialize(InputStream is, Class type) throws Exception {
+    public <T> T deserialize(byte[] bytes, Class<T> type) throws Exception {
+        ByteArrayInputStream in = new ByteArrayInputStream(bytes);
 
         // CodedInput is "implicit" protocol buffer specific.
         // why is there no ProtobufInput (as ProtobufOutput exists)?
         // other "Inputs" look very similar (i.e. have cut and waste code): ByteArrayInput, ByteBufferInput
-        CodedInput input = new CodedInput(is, false);
+        CodedInput input = new CodedInput(in, false);
         if (type == DataObject.class) {
             // hardcoded according to ProtobufConstants.PROTO_DATA_OBJECT
             DataObject ret = new DataObject();
@@ -87,10 +79,11 @@ public class ProtostuffRawProtobufSerializer implements SerializeService {
                         throw new RuntimeException("unsupported field nr: " + fieldNr + " tag: " + tag);
                 }
             }
-            return ret;
+            return (T) ret;
         }
         else {
             throw new RuntimeException("not implemented class: " + type);
         }
     }
+
 }

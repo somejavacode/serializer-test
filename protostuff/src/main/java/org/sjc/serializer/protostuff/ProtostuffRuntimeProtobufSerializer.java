@@ -26,26 +26,18 @@ public class ProtostuffRuntimeProtobufSerializer implements SerializeService {
         }
     }
 
-    @Override
-    public void serialize(Object obj, OutputStream os) throws Exception {
-        throw new Exception("not supported");
-    }
 
     @Override
-    public Object deserialize(byte[] bytes, Class type) throws Exception {
+    public <T> T deserialize(byte[] bytes, Class<T> type) throws Exception {
         if (type == DataObject.class) {
             Schema<DataObject> schema = RuntimeSchema.getSchema(DataObject.class);
             DataObject ret = schema.newMessage();
             ProtobufIOUtil.mergeFrom(bytes, ret, schema);
-            return ret;
+            return (T) ret;
         }
         else {
             throw new RuntimeException("not implemented class: " + type);
         }
     }
 
-    @Override
-    public Object deserialize(InputStream is, Class type) throws Exception {
-        throw new Exception("not supported");
-    }
 }

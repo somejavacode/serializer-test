@@ -82,7 +82,7 @@ public class ProtobufSerializeTest {
             LOG.info("serialized type: " + getInfo() + " input: " + object);
             LOG.info("got bytes with length=" + objBytes.length + " value=" + Hex.toString(objBytes));
         }
-        DataObjectOuterClass.DataObject object2 = (DataObjectOuterClass.DataObject) service.deserialize(objBytes, DataObjectOuterClass.DataObject.class);
+        DataObjectOuterClass.DataObject object2 = service.deserialize(objBytes, DataObjectOuterClass.DataObject.class);
         Assert.assertEquals(object, object2);
     }
 
