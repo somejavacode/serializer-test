@@ -1,10 +1,8 @@
 package org.sjc.serializer.protobuf;
 
 import org.sjc.serializer.api.SerializeService;
-import org.sjc.serializer.protoc.DataObjectOuterClass.DataObject;
+import org.sjc.serializer.protoc.test.DataObject;
 
-import java.io.InputStream;
-import java.io.OutputStream;
 
 public class ProtobufSerializer implements SerializeService {
     @Override

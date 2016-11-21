@@ -4,7 +4,7 @@ import com.google.protobuf.ByteString;
 import org.junit.Assert;
 import org.junit.Test;
 import org.sjc.serializer.api.SerializeService;
-import org.sjc.serializer.protoc.DataObjectOuterClass;
+import org.sjc.serializer.protoc.test.DataObject;
 import org.sjc.serializer.tools.Hex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +21,9 @@ public class ProtobufSerializeTest {
     @Test
     public void simpleObjectTest() throws Exception {
         SerializeService service = new ProtobufSerializer();
-        DataObjectOuterClass.DataObject object = DataObjectOuterClass.DataObject.newBuilder()
+        DataObject object = DataObject.newBuilder()
             .setByteArray(ByteString.copyFrom(new byte[] {1, 2, 3, -1, 33}))
-            .setType(DataObjectOuterClass.DataObject.Type.T1)
+            .setType(DataObject.Type.T1)
             .setStringValue("whatever 1234556 üöä") // note: this is utf-8 source code
             .setLongValue(0x112233445566L).build();
 
@@ -32,9 +32,9 @@ public class ProtobufSerializeTest {
 
     @Test
     public void speedTest() throws Exception {
-        DataObjectOuterClass.DataObject object = DataObjectOuterClass.DataObject.newBuilder()
+        DataObject object = DataObject.newBuilder()
                 .setByteArray(ByteString.copyFrom(new byte[128]))
-                .setType(DataObjectOuterClass.DataObject.Type.T2)
+                .setType(DataObject.Type.T2)
                 .setStringValue("Lorem ipsum dolor sit amet, consectetur adipiscing elit")
                 .setLongValue(0x992233445511L).build();
 
@@ -57,7 +57,7 @@ public class ProtobufSerializeTest {
     public void emptyObjectTest() throws Exception {
         SerializeService service = new ProtobufSerializer();
         // test correct "null" handling
-        DataObjectOuterClass.DataObject object = DataObjectOuterClass.DataObject.newBuilder().build();
+        DataObject object = DataObject.newBuilder().build();
         testSerializeDeserialize(service, object, true);
     }
 
@@ -65,12 +65,12 @@ public class ProtobufSerializeTest {
     public void ByteArrayOverheadTest() throws Exception {
         SerializeService service = new ProtobufSerializer();
         // test binary overhead
-        DataObjectOuterClass.DataObject object = DataObjectOuterClass.DataObject.newBuilder()
+        DataObject object = DataObject.newBuilder()
                 .setByteArray(ByteString.copyFrom(new byte[150])).build();
 
         testSerializeDeserialize(service, object, true);
 
-        object = DataObjectOuterClass.DataObject.newBuilder()
+        object = DataObject.newBuilder()
                 .setByteArray(ByteString.copyFrom(new byte[300])).build();
         testSerializeDeserialize(service, object, true);
     }
@@ -82,7 +82,7 @@ public class ProtobufSerializeTest {
             LOG.info("serialized type: " + getInfo() + " input: " + object);
             LOG.info("got bytes with length=" + objBytes.length + " value=" + Hex.toString(objBytes));
         }
-        DataObjectOuterClass.DataObject object2 = service.deserialize(objBytes, DataObjectOuterClass.DataObject.class);
+        DataObject object2 = service.deserialize(objBytes, DataObject.class);
         Assert.assertEquals(object, object2);
     }
 

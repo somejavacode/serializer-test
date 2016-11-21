@@ -1,4 +1,8 @@
+syntax = "proto2";
+
 package org.sjc.serializer.protoc;
+
+option java_outer_classname = "test";
 
 message DataObject {
     enum Type {

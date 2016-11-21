@@ -1,4 +1,8 @@
+syntax = "proto2";
+
 import "DataObject.proto";
+
+option java_outer_classname = "test";
 
 package org.sjc.serializer.protoc;
 
