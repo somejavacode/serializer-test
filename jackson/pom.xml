@@ -12,14 +12,19 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <jackson.version>2.8.6</jackson.version>
-        <dataformat.msgpack.version>0.8.11</dataformat.msgpack.version>
+        <jackson.version>2.8.8</jackson.version>
+        <dataformat.msgpack.version>0.8.12</dataformat.msgpack.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
         </dependency>
         <dependency>
@@ -44,11 +49,15 @@
             <artifactId>jackson-dataformat-cbor</artifactId>
             <version>${jackson.version}</version>
         </dependency>
+
+<!--
+         loaded transitive jackson-databind in old version...
         <dependency>
             <groupId>org.msgpack</groupId>
             <artifactId>jackson-dataformat-msgpack</artifactId>
             <version>${dataformat.msgpack.version}</version>
         </dependency>
+-->
 
         <dependency>
             <groupId>somejavacode</groupId>
