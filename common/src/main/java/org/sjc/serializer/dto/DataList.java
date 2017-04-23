@@ -7,16 +7,16 @@ public class DataList {
 
     private List<DataObject> objects;
 
+    public DataList() {
+        this.objects = new ArrayList<DataObject>();
+    }
+
     public List<DataObject> getObjects() {
         return objects;
     }
 
     public void setObjects(List<DataObject> objects) {
         this.objects = objects;
-    }
-
-    public DataList() {
-        this.objects = new ArrayList<DataObject>();
     }
 
     public void addObject(DataObject object) {

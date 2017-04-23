@@ -5,7 +5,6 @@ import org.sjc.serializer.tools.Hex;
 
 import java.util.Arrays;
 
-
 /**
  * NOTE: this is a copy of org.sjc.serializer.dto.DataObject with protostuff Tag annotations added. <br/>
  * field numbers should match

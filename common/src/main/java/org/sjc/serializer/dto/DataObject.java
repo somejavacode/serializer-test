@@ -14,12 +14,12 @@ public class DataObject {
 
         private int id;
 
-        public int getId() {
-            return id;
-        }
-
         Type(int id) {
             this.id = id;
+        }
+
+        public int getId() {
+            return id;
         }
 
         public static Type getById(int id) {

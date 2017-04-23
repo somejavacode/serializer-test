@@ -7,8 +7,6 @@ import io.protostuff.runtime.RuntimeSchema;
 import org.sjc.serializer.api.SerializeService;
 import org.sjc.serializer.dto.protostuff.DataObject;
 
-import java.io.InputStream;
-import java.io.OutputStream;
 
 public class ProtostuffRuntimeProtobufSerializer implements SerializeService {
     @Override
@@ -25,7 +23,6 @@ public class ProtostuffRuntimeProtobufSerializer implements SerializeService {
             throw new RuntimeException("not implemented class: " + obj.getClass());
         }
     }
-
 
     @Override
     public <T> T deserialize(byte[] bytes, Class<T> type) throws Exception {

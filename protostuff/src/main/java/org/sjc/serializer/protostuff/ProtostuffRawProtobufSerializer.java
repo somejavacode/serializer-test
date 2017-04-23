@@ -9,8 +9,6 @@ import org.sjc.serializer.dto.DataObject;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 public class ProtostuffRawProtobufSerializer implements SerializeService {
 
@@ -43,9 +41,6 @@ public class ProtostuffRawProtobufSerializer implements SerializeService {
         }
     }
 
-    public void serialize(Object obj, OutputStream os) throws Exception {
-
-    }
 
     @Override
     public <T> T deserialize(byte[] bytes, Class<T> type) throws Exception {
