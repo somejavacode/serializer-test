@@ -20,4 +20,9 @@ public class JacksonJsonSerializeTest extends AbstractSerializeTest {
         return true;
     }
 
+    @Override
+    protected boolean isListImplemented() {
+        return true;
+    }
+
 }

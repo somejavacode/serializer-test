@@ -27,6 +27,11 @@ public abstract class AbstractSerializeTest {
         return false;
     }
 
+    /** override to enable list test */
+    protected boolean isListImplemented() {
+        return false;
+    }
+
     @Test
     public void simpleObjectTest() throws Exception {
         DataObject object = new DataObject();
@@ -80,16 +85,47 @@ public abstract class AbstractSerializeTest {
         testSerializeDeserialize(service, object, true);
     }
 
+    @Test
+    public void objectListTest() throws Exception {
+        if (!isListImplemented()) {
+            return;
+        }
+        SerializeService service = getSerializer();
+
+        DataList list = new DataList();
+        // test empty
+        testSerializeDeserialize(service, list, true);
+
+        DataObject object = new DataObject();
+        object.setType(DataObject.Type.T1);
+        object.setLongValue(1);
+        list.addObject(object);
+
+        // test single element
+        testSerializeDeserialize(service, list, true);
+
+        DataObject object2 = new DataObject();
+        object2.setType(DataObject.Type.T4);
+        object2.setLongValue(4);
+        list.addObject(object2);
+        DataObject object3 = new DataObject();
+        object3.setType(DataObject.Type.T3);
+        object3.setLongValue(3);
+        list.addObject(object3);
+
+        // test multiple elements
+        testSerializeDeserialize(service, list, true);
+    }
+
     private void testSerializeDeserialize(SerializeService service, Object object, boolean log) throws Exception {
         byte[] objBytes = service.serialize(object);
         if (log) {
             LOG.info("serialized type: " + getInfo() + " input: " + object);
-            LOG.info("got bytes with length=" + objBytes.length + " value=" + Hex.toString(objBytes));
-            if (isStringFormat()) {
-                LOG.info("got bytes as string=" + new String(objBytes, "UTF-8")); // encoding hard coded for now.
-            }
+            // encoding hard coded for now.
+            String value = isStringFormat() ? new String(objBytes, "UTF-8") : Hex.toString(objBytes);
+            LOG.info("got bytes with length=" + objBytes.length + " value=" + value);
         }
-        DataObject object2 = service.deserialize(objBytes, DataObject.class);
+        Object object2 = service.deserialize(objBytes, object.getClass());
         Assert.assertEquals(object, object2);
     }
 
