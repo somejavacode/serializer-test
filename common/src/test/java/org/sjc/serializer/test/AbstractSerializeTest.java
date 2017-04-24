@@ -2,16 +2,13 @@ package org.sjc.serializer.test;
 
 import org.junit.Assert;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sjc.serializer.api.SerializeService;
 import org.sjc.serializer.dto.DataObject;
+import org.sjc.serializer.dto.DataList;
 import org.sjc.serializer.tools.Hex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 
 public abstract class AbstractSerializeTest {
 
@@ -25,6 +22,11 @@ public abstract class AbstractSerializeTest {
         return 250000;
     }
 
+    /** override to enable string dump */
+    protected boolean isStringFormat() {
+        return false;
+    }
+
     @Test
     public void simpleObjectTest() throws Exception {
         DataObject object = new DataObject();
@@ -35,7 +37,6 @@ public abstract class AbstractSerializeTest {
         SerializeService service = getSerializer();
         testSerializeDeserialize(service,  object, true);
     }
-
 
     @Test
     public void speedTest() throws Exception {
@@ -84,6 +85,9 @@ public abstract class AbstractSerializeTest {
         if (log) {
             LOG.info("serialized type: " + getInfo() + " input: " + object);
             LOG.info("got bytes with length=" + objBytes.length + " value=" + Hex.toString(objBytes));
+            if (isStringFormat()) {
+                LOG.info("got bytes as string=" + new String(objBytes, "UTF-8")); // encoding hard coded for now.
+            }
         }
         DataObject object2 = service.deserialize(objBytes, DataObject.class);
         Assert.assertEquals(object, object2);
