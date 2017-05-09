@@ -64,7 +64,8 @@ public class JacksonJsonConfigTest {
 
     private TestDTO getDto() {
         TestDTO value = new TestDTO();
-        value.setStringValue("Ümlaut"); // note: source code is UTF-8
+        // note. must not write "\\u000a" for "\\r" (also not in comments, so using \\)
+        value.setStringValue("Ü\u00DCmlaut / \\ \n \r \u0001"); // note: source code is UTF-8
         // value.setDateValue(new Date(117, 1, 2));  // crappy constructor! using default time zone, setting time to zero.
         value.setDateValue(new Date(0));  // 1.1.1970 00:00:00 UTC
         return value;
