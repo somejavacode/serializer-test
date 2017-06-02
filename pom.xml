@@ -23,6 +23,7 @@
         <module>jackson</module> 
         <module>protobuf</module> 
         <module>protostuff</module> 
+        <module>johnzon</module>
     </modules>
 
     <!-- common -->
