@@ -29,6 +29,20 @@
             <version>${johnzon.version}</version>
         </dependency>
 
+        <dependency>
+            <!-- org.apache.johnzon.jsonb.JohnzonProvider -->
+            <groupId>org.apache.johnzon</groupId>
+            <artifactId>johnzon-jsonb</artifactId>
+            <version>${johnzon.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-jsonb_1.0_spec</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+
         <!-- java.lang.NoClassDefFoundError: javax/json/spi/JsonProvider -->
         <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
