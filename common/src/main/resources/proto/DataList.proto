@@ -1,3 +1,5 @@
+import "DataObject.proto";
+
 message DataList {
     repeated DataObject objects = 1;
 }
