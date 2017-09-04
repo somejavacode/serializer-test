@@ -52,8 +52,10 @@ public class JacksonProtobufSerializer implements SerializeService {
         byte[] fileData = baos.toByteArray();
         String schemaString = new String(fileData, "utf-8");
         return ProtobufSchemaLoader.std.parse(schemaString);
-    }
+        // String path = "common/src/main/resources/proto/" + classes[0].getSimpleName() + ".proto";
+        // return ProtobufSchemaLoader.std.load(new File(path));
 
+    }
     @Override
     public byte[] serialize(Object obj) throws Exception {
         ProtobufSchema schema = schemaMap.get(obj.getClass());
