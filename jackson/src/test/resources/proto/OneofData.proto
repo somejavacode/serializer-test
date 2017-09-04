@@ -1,0 +1,21 @@
+message OneofData {
+
+// --- not working with com.squareup.protoparser ---
+// com.fasterxml.jackson.core.JsonGenerationException: Unrecognized field 'objA' (in Message of type OneofData); known fields are: []
+
+//    oneof testing {
+//        ObjectA objA = 1;
+//        ObjectB objB = 2;
+//    }
+
+    optional ObjectA objA = 1;
+    optional ObjectB objB = 2;
+}
+
+message ObjectA {
+    optional string stringValue = 1;
+}
+
+message ObjectB {
+    optional sint64 longValue = 1;
+}
