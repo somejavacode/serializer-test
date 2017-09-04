@@ -113,7 +113,6 @@ public class JacksonProtobufSerializer implements SerializeService {
     @Override
     public byte[] serialize(Object obj) throws Exception {
         ProtobufSchema schema = getSchema(obj.getClass());
-        // todo: thread safe?
         ObjectWriter writer = mapper.writer(schema);
         return writer.writeValueAsBytes(obj);
     }
@@ -122,7 +121,6 @@ public class JacksonProtobufSerializer implements SerializeService {
     @Override
     public <T> T deserialize(byte[] bytes, Class<T> type) throws Exception {
         ProtobufSchema schema = getSchema(type);
-        // todo: thread safe?
         ObjectReader r = mapper.readerFor(type).with(schema);
         return r.readValue(bytes);
     }
