@@ -24,6 +24,7 @@
         <module>protobuf</module> 
         <module>protostuff</module> 
         <module>johnzon</module>
+        <module>hessian</module>
     </modules>
 
     <!-- common -->
