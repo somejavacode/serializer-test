@@ -1,10 +1,8 @@
 package org.sjc.serializer.hessian;
 
-import org.junit.Ignore;
 import org.sjc.serializer.api.SerializeService;
 import org.sjc.serializer.test.AbstractSerializeTest;
 
-@Ignore
 public class HessianSerializerTest extends AbstractSerializeTest {
 
     @Override
