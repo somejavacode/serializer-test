@@ -20,11 +20,6 @@ public class JohnzonSerializerTest extends AbstractSerializeTest {
         return true;
     }
 
-    /** johnzon 1.2+ is 1000 times slower, reduce repeats */
-    protected int getRepeats() {
-        return 250;
-    }
-
     @Override
     protected boolean isListImplemented() {
         return true;
