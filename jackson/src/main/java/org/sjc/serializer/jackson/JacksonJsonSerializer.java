@@ -1,5 +1,6 @@
 package org.sjc.serializer.jackson;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -12,6 +13,7 @@ public class JacksonJsonSerializer implements SerializeService {
 
     public JacksonJsonSerializer() {
         mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         //  mapper.setConfig()
         // mapper.setDateFormat();
         // encoding? UTF-8 seems default.

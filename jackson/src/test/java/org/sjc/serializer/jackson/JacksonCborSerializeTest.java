@@ -14,4 +14,9 @@ public class JacksonCborSerializeTest extends AbstractSerializeTest {
     protected String getInfo() {
         return "Jackson-CBOR";
     }
+
+    @Override
+    protected boolean isListImplemented() {
+        return true;
+    }
 }
