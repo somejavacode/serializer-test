@@ -14,4 +14,10 @@ public class JacksonSmileSerializeTest extends AbstractSerializeTest {
     protected String getInfo() {
         return "Jackson-SMILE";
     }
+
+    @Override
+    protected boolean isListImplemented() {
+        return true;
+    }
+
 }
