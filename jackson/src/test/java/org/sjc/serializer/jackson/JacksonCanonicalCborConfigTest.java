@@ -71,7 +71,6 @@ public class JacksonCanonicalCborConfigTest {
         // 65536-4294967295
         testIntSize(writer, 65536, 16); // BF 68 69 6E 74 56 61 6C 75 65 1A 00 01 00 00 FF
         testIntSize(writer, Integer.MAX_VALUE, 16);  // 4294967295 in spec is strange
-
     }
 
     private void testIntSize(ObjectWriter writer, int testInt, int expectedSize) throws Exception {
@@ -82,9 +81,9 @@ public class JacksonCanonicalCborConfigTest {
         Assert.assertEquals(expectedSize, encoded.length);
     }
     /**
-     * Test §1 "Integers must be as small as possible."
+     * Test §2 "The expression of lengths in major types 2 through 5 must be as short as possible."
      * <p>
-     * Testing only type 2 "byte string" here, assume type 3-5 are processed identical
+     * Note: Testing only type 2 "byte string" here, assume types 3-5 are processed identical
      */
     @Test
     public void testByteArraySize() throws Exception {
@@ -104,7 +103,6 @@ public class JacksonCanonicalCborConfigTest {
 
         // 65536-4294967295
         testByteArraySize(writer, 65536, 65563);
-
     }
 
     private void testByteArraySize(ObjectWriter writer, int byteSize, int expectedSize) throws Exception {
