@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
  * <p>
  * Current status: FAILED
  * <p>
- * $3 fails, cannot change sorting $4 fails: see no option to fix this.
+ * §3 fails, cannot set required sorting §4 fails: see no option to fix this.
  */
 public class JacksonCanonicalCborConfigTest {
 
@@ -83,7 +83,7 @@ public class JacksonCanonicalCborConfigTest {
     /**
      * Test §2 "The expression of lengths in major types 2 through 5 must be as short as possible."
      * <p>
-     * Note: Testing only type 2 "byte string" here, assume types 3-5 are processed identical
+     * Note: Testing only type 2 "byte string" here, assume types 3-5 are processed the same way
      */
     @Test
     public void testByteArraySize() throws Exception {
@@ -115,6 +115,10 @@ public class JacksonCanonicalCborConfigTest {
 
     /**
      * Test §3 "The keys in every map must be sorted lowest value to highest."
+     * <p>
+     * Detail sorting rules:
+     *  If two keys have different lengths, the shorter one sorts earlier;
+     *  If two keys have the same length, the one with the lower value in (byte-wise) lexical order sorts earlier.
      */
     @Test
     public void testFieldOrder() throws Exception {
@@ -125,7 +129,11 @@ public class JacksonCanonicalCborConfigTest {
         TestSortDTO dto = new TestSortDTO(2, 1, 3);
         byte[] encoded = writer.writeValueAsBytes(dto);
         LOG.info("CBOR bytes:\n" + Hex.toStringBlock(encoded));
+        // only alphabetical sorting is supported
         // sort order is aTestInt, bTestInteger, zTestInt
+
+        // with given "method" order should be
+        // aTestInt, zTestInt, bTestInteger
         // Assert.fail();
     }
 
