@@ -30,6 +30,15 @@ public class DataObject {
             }
             throw new RuntimeException("unknown id: " + id);
         }
+
+        public static Type getByName(String name) {
+            for (Type t : values()) {
+                if (t.toString().equals(name)) {
+                    return t;
+                }
+            }
+            throw new RuntimeException("unknown name: " + name);
+        }
     }
 
     private Type type;

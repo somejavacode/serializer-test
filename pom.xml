@@ -25,6 +25,7 @@
         <module>protostuff</module> 
         <module>johnzon</module>
         <module>hessian</module>
+        <module>cbor-java</module>
     </modules>
 
     <!-- common -->
