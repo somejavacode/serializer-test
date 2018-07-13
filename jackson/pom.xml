@@ -12,7 +12,8 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <jackson.version>2.9.5</jackson.version>
+        <!-- https://github.com/FasterXML/jackson-core/releases -->
+        <jackson.version>2.9.6</jackson.version>
         <!--<dataformat.msgpack.version>0.8.12</dataformat.msgpack.version>-->
     </properties>
 
