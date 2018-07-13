@@ -10,6 +10,8 @@ import org.sjc.serializer.tools.Hex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Random;
+
 public abstract class AbstractSerializeTest {
 
     protected static Logger LOG = LoggerFactory.getLogger(AbstractSerializeTest.class);  // TODO: how to use derived class?
@@ -64,6 +66,22 @@ public abstract class AbstractSerializeTest {
         long time = System.nanoTime() - start;
         LOG.info("serialize/deserialize type: " + getInfo() + ". repeat " + repeat + " times took " + (time / 1000000) +
                   "ms. each round took " + (time / repeat) + "ns");
+    }
+
+    @Test
+    public void blobSpeedTest() throws Exception {
+        DataObject object = new DataObject();
+        int size = 25 *1024 * 1024;
+        byte[] data = new byte[size];
+        // fill with random
+        new Random().nextBytes(data);
+        object.setByteArray(data);
+        SerializeService service = getSerializer();
+        testSerializeDeserialize(service, object, false);
+        long start = System.nanoTime();
+        testSerializeDeserialize(service, object, false);
+        long time = System.nanoTime() - start;
+        LOG.info("serialize/deserialize type: " + getInfo() + ". size " + size + " bytes blob " + time / 1000000 + "ms");
     }
 
     @Test
