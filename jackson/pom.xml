@@ -13,7 +13,7 @@
 
     <properties>
         <!-- https://github.com/FasterXML/jackson-core/releases -->
-        <jackson.version>2.9.6</jackson.version>
+        <jackson.version>2.9.8</jackson.version>
         <!--<dataformat.msgpack.version>0.8.12</dataformat.msgpack.version>-->
     </properties>
 
